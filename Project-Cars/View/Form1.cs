@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Project_Cars.Controller;
+using Project_Cars.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,10 +15,13 @@ namespace Project_Cars
 {
     public partial class Form1 : Form
     {
+        int aaa = 0;
          Random random = new Random();
          int x;
          int collectedFuel = 0;
          int gameSpeed = 0;
+        private ControlerScoreTable controlerSc = new ControlerScoreTable(new ScoreContext());
+        private ScoreContext scoreContext = new ScoreContext();
 
         public Form1()
         {
@@ -34,7 +39,7 @@ namespace Project_Cars
         {
 
         }
-
+        //Game Timer
         private void timer1_Tick(object sender, EventArgs e)
         {
             moveline(gameSpeed);
@@ -175,44 +180,48 @@ namespace Project_Cars
                     fuel_3.Location = new Point(x, 0);
             }
         }
-        
+       
         //Player Car Controll
         public void Form1_KeyDown(object sender, KeyEventArgs e)
-        {         
-            if(e.KeyCode==Keys.Left)
+        {
+            if (e.KeyCode == Keys.Left)
             {
-                if (player.Left >0)            
-                player.Left += -gameSpeed;
+                if (player.Left > 0)
+                    player.Left += -gameSpeed;
             }
 
             if (e.KeyCode == Keys.Right)
             {
-                if(player.Right<634)
-                player.Left += gameSpeed;
+                if (player.Right < 634)
+                    player.Left += gameSpeed;
             }
             if (e.KeyCode == Keys.Up)
             {
-                if (gameSpeed < 21) 
+                if (gameSpeed < 21)
                 {
-                    gameSpeed++; 
+                    gameSpeed++;
                 }
             }
-            if (e.KeyCode == Keys.Down) 
-            { 
-                if (gameSpeed > 0) 
-                { 
-                    gameSpeed--; 
+            if (e.KeyCode == Keys.Down)
+            {
+                if (gameSpeed > 0)
+                {
+                    gameSpeed--;
                 }
-            }                   
+            }
         }
         void gameOver() 
         {
+            var scoreId = scoreContext.users.FirstOrDefault(x => x.name == label1.Text);
+            var score = scoreContext.rankingscore.FirstOrDefault(x=>x.users_id==scoreId.id);
+            var WhereToUpDate = scoreContext.users.FirstOrDefault(x => x.id == score.users_id);
             if (player.Bounds.IntersectsWith(enemy_2.Bounds)) 
             {
                 timer1.Enabled = false;
                 gameOver_txt.Visible = true;
                 restartButton.Visible = true;
-                scoreButton.Visible = true;
+                scoreButton.Visible = true;                                     
+                controlerSc.Update(collectedFuel, score.users_id);                            
             }
             if (player.Bounds.IntersectsWith(enemy_1.Bounds))
             {
@@ -220,6 +229,8 @@ namespace Project_Cars
                 gameOver_txt.Visible = true;
                 restartButton.Visible = true;
                 scoreButton.Visible = true;
+                controlerSc.Update(collectedFuel, score.users_id);
+
             }
             if (player.Bounds.IntersectsWith(enemy_3.Bounds))
             {
@@ -227,6 +238,8 @@ namespace Project_Cars
                 gameOver_txt.Visible = true;
                 restartButton.Visible = true;
                 scoreButton.Visible = true;
+                controlerSc.Update(collectedFuel, score.users_id);
+
             }
         }
         private void gameOver_txt_Click(object sender, EventArgs e)
@@ -243,19 +256,21 @@ namespace Project_Cars
             gameOver_txt.Visible = false;
             restartButton.Visible = false;
             scoreButton.Visible = false;
-
+           
             collectedFuel = 0;
 
-            player.Location = new Point(185,402);
+            player.Location = new Point(185, 402);
 
-            enemy_3.Location = new Point(34,86);
-            enemy_2.Location = new Point(342,39);
-            enemy_1.Location = new Point(514,271);
-         
+            enemy_3.Location = new Point(34, 86);
+            enemy_2.Location = new Point(342, 39);
+            enemy_1.Location = new Point(514, 271);
+
+            //Form1_KeyDown(sender, a);
             enemy(gameSpeed);           
             fuel(gameSpeed);
             CollectedFuel();
-        }      
+        }
+     
     }
 
 }

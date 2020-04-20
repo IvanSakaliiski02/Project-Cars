@@ -8,19 +8,20 @@ using System.Threading.Tasks;
 
 namespace Project_Cars.Data
 {
-    public class Score : DbContext
+    public class ScoreContext : DbContext
     {
-        public Score()
+        public ScoreContext()
         {
 
         }
 
-        public Score(DbContextOptions options) 
+        public ScoreContext(DbContextOptions options) 
              :base(options) 
         {
 
         }
-        public DbSet<ScoreTable> RankingScore { get; set; } 
+        public virtual DbSet<User> users { get; set; }
+        public virtual DbSet<ScoreTable> rankingscore { get; set; } 
         protected override void OnConfiguring
             (DbContextOptionsBuilder optionsBuilder)
         {

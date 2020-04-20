@@ -9,7 +9,8 @@ namespace Project_Cars.Data
     public static class Configuration
     {
         public const string ConnectionString =
-            "Server=.\\SQLEXPRESS;Database=Score;Integrated Security=True";
+            "Server=(localdb)\\MSSQLLocalDB;Database=score;Integrated Security=True";
+
     }
 }
  

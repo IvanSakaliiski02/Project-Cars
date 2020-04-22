@@ -17,9 +17,11 @@ namespace Project_Cars.View
     {
         private UserController userCt = new UserController(new ScoreContext());
         private ScoreContext scoreCt = new ScoreContext();
+        private ControlerScoreTable controlTable = new ControlerScoreTable(new ScoreContext());
         public Login()
         {
             InitializeComponent();
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -38,9 +40,29 @@ namespace Project_Cars.View
                
                 this.Hide();
                 var Form1 = new Form1();
-                Form1.Show(); 
-                Form1.label1.Text = loginBox.Text;
+                Form1.Show();
+                if (!(loginBox.Text == null))
+                {
+                   Form1.label1.Text = loginBox.Text;
+                }
+               
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            controlTable.Delete(nameToDel.Text);
+            userCt.Delete(nameToDel.Text);
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.Hide();
         }
     }
 }

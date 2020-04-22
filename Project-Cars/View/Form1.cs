@@ -15,7 +15,6 @@ namespace Project_Cars
 {
     public partial class Form1 : Form
     {
-        int aaa = 0;
          Random random = new Random();
          int x;
          int collectedFuel = 0;
@@ -36,12 +35,12 @@ namespace Project_Cars
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-
+        {         
+       
         }
         //Game Timer
         private void timer1_Tick(object sender, EventArgs e)
-        {
+        {        
             moveline(gameSpeed);
             enemy(gameSpeed);
             gameOver();
@@ -212,6 +211,7 @@ namespace Project_Cars
         }
         void gameOver() 
         {
+          
             var scoreId = scoreContext.users.FirstOrDefault(x => x.name == label1.Text);
             var score = scoreContext.rankingscore.FirstOrDefault(x=>x.users_id==scoreId.id);
             var WhereToUpDate = scoreContext.users.FirstOrDefault(x => x.id == score.users_id);
@@ -220,8 +220,12 @@ namespace Project_Cars
                 timer1.Enabled = false;
                 gameOver_txt.Visible = true;
                 restartButton.Visible = true;
-                scoreButton.Visible = true;                                     
-                controlerSc.Update(collectedFuel, score.users_id);                            
+                scoreButton.Visible = true;           
+                if(score.score<=collectedFuel)
+                {
+                     controlerSc.Update(collectedFuel, score.users_id);              
+                }
+                                     
             }
             if (player.Bounds.IntersectsWith(enemy_1.Bounds))
             {
@@ -229,8 +233,10 @@ namespace Project_Cars
                 gameOver_txt.Visible = true;
                 restartButton.Visible = true;
                 scoreButton.Visible = true;
-                controlerSc.Update(collectedFuel, score.users_id);
-
+                if (score.score <= collectedFuel)
+                {
+                    controlerSc.Update(collectedFuel, score.users_id);
+                }            
             }
             if (player.Bounds.IntersectsWith(enemy_3.Bounds))
             {
@@ -238,8 +244,10 @@ namespace Project_Cars
                 gameOver_txt.Visible = true;
                 restartButton.Visible = true;
                 scoreButton.Visible = true;
-                controlerSc.Update(collectedFuel, score.users_id);
-
+                if (score.score <= collectedFuel)
+                {
+                    controlerSc.Update(collectedFuel, score.users_id);
+                }
             }
         }
         private void gameOver_txt_Click(object sender, EventArgs e)
@@ -248,7 +256,9 @@ namespace Project_Cars
         }
         private void scoreButton_Click(object sender, EventArgs e)
         {
-            
+            this.Hide();
+            var form2 = new Form2();
+            form2.Show();
         }
         private void restartButton_Click(object sender, EventArgs e)
         {
@@ -265,12 +275,10 @@ namespace Project_Cars
             enemy_2.Location = new Point(342, 39);
             enemy_1.Location = new Point(514, 271);
 
-            //Form1_KeyDown(sender, a);
+            moveline(gameSpeed);
             enemy(gameSpeed);           
             fuel(gameSpeed);
             CollectedFuel();
-        }
-     
+        }   
     }
-
 }

@@ -15,7 +15,12 @@ namespace Project_Cars.Controller
         private ScoreContext scoreContext;
         public ControlerScoreTable(ScoreContext score)
         {
-            scoreContext = score;
+            scoreContext = score;           
+        }
+        public ScoreTable Get(int id) 
+        {
+            var GetId = scoreContext.rankingscore.FirstOrDefault(x => x.id == id);
+            return GetId;
         }
         public void Add(int scoreTable,int userId) 
         {
@@ -25,13 +30,19 @@ namespace Project_Cars.Controller
         }
         public void Update(int scoreUpDate,int UserId) 
         {
-            var score = new ScoreTable() { score = scoreUpDate,users_id=UserId};
-            
+            var score = new ScoreTable() { score = scoreUpDate,users_id=UserId};           
             var RankingScoreId = scoreContext.users.FirstOrDefault(x => x.id == UserId);
+            var id = Get(RankingScoreId.id);
             Updated = score;
             Updated.id = RankingScoreId.id;
-            Updated.users_id = score.users_id;          
-            scoreContext.Entry(Updated.id).CurrentValues.SetValues(Updated);
+            scoreContext.Entry(id).CurrentValues.SetValues(Updated);
+            scoreContext.SaveChanges();
+        }
+        public void Delete(string name) 
+        {
+            var del = scoreContext.users.FirstOrDefault(x => x.name == name);
+            var GetDel = scoreContext.rankingscore.FirstOrDefault(x => x.users_id == del.id);
+            scoreContext.Remove(GetDel);
             scoreContext.SaveChanges();
         }
 

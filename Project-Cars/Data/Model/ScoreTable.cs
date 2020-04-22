@@ -18,6 +18,5 @@ namespace Project_Cars.Data.Model
         [ForeignKey(nameof(users))]
         public int users_id { get; set; }
         public User users { get; set; }
-
     }
 }

@@ -28,5 +28,11 @@ namespace Project_Cars.Controller
             scoreContext.Add(User);
             scoreContext.SaveChanges();
         }
+        public void Delete (string name)
+        {
+            var del = scoreContext.users.FirstOrDefault(x=>x.name==name);
+            scoreContext.Remove(del);
+            scoreContext.SaveChanges();
+        }
     }
 }
